@@ -1,0 +1,395 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  /* Midnight base — graded to sit under the Europa reference painting */
+  --color-ink: #060818;
+  --color-ink-2: #0a0f2c;
+  --color-ink-3: #121846;
+  --color-violet: #7c5cff;
+  --color-cyan: #38e1ff;
+  --color-magenta: #ff4fd8;
+  /* Pulled from the reference scene's sky / fabric tones */
+  --color-cream: #efe6d6;
+  --color-amber: #f2a65a;
+  --color-sky: #70a2bc;
+  --color-text: #eef0ff;
+  --color-muted: #aab2d8;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ───────── Base ───────── */
+html {
+  background: var(--color-ink);
+  color: var(--color-text);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100svh;
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--color-ink);
+  overflow-x: clip; /* never allow horizontal page scroll */
+}
+::selection {
+  background: color-mix(in oklab, var(--color-violet) 60%, transparent);
+  color: white;
+}
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* ───────── Optical typography (Apple: tracking & leading are size-specific) ───────── */
+.display {
+  letter-spacing: -0.038em;
+  line-height: 0.95;
+  font-weight: 650;
+}
+.title {
+  letter-spacing: -0.028em;
+  line-height: 1.05;
+  font-weight: 620;
+}
+.body-copy {
+  letter-spacing: -0.006em;
+  line-height: 1.6;
+}
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 560;
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #ffffff 0%, #cfd6ff 28%, var(--color-cyan) 62%, #b79bff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ───────── Materials (translucent, layered — Apple "materials & depth") ───────── */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  backdrop-filter: blur(22px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 24px 60px -24px rgba(0, 0, 0, 0.65);
+}
+/* Heavier material = structure (panels); lighter = controls. */
+.glass-strong {
+  background: linear-gradient(180deg, rgba(14, 19, 56, 0.72), rgba(8, 11, 36, 0.62));
+  -webkit-backdrop-filter: blur(34px) saturate(1.6);
+  backdrop-filter: blur(34px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 40px 100px -30px rgba(0, 0, 0, 0.8);
+}
+.hairline {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.field {
+  background: rgba(6, 8, 24, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition:
+    border-color 0.2s var(--ease-out-expo),
+    box-shadow 0.2s var(--ease-out-expo),
+    background-color 0.2s;
+}
+.field:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-cyan) 22%, transparent);
+}
+.field[aria-invalid='true'] {
+  border-color: #ff7a93;
+  box-shadow: 0 0 0 4px rgba(255, 122, 147, 0.16);
+}
+
+/* Subtle film grain gives the glass a "noise" texture, like the reference's Glass Noise map */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ───────── Buttons ───────── */
+.btn-primary {
+  background: linear-gradient(110deg, #7c5cff 0%, #5f7bff 45%, #38e1ff 100%);
+  background-size: 140% 100%;
+  color: #04061a;
+  font-weight: 640;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 10px 30px -8px rgba(124, 92, 255, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
+  transition:
+    background-position 0.5s var(--ease-out-expo),
+    box-shadow 0.3s var(--ease-out-expo),
+    filter 0.2s;
+}
+.btn-primary:hover:not(:disabled) {
+  background-position: 100% 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 14px 40px -6px rgba(56, 225, 255, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+.btn-primary:disabled {
+  filter: saturate(0.6) brightness(0.85);
+}
+.btn-glass {
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.btn-glass:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+
+/* ───────── Ambient animation ───────── */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, -6%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes hue-cycle {
+  to {
+    filter: hue-rotate(360deg) blur(var(--blur, 14px));
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes ring-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-float {
+  animation: float-y var(--dur, 7s) ease-in-out infinite;
+}
+.animate-drift {
+  animation: drift var(--dur, 22s) ease-in-out infinite;
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+.bump {
+  animation: bump 0.45s var(--ease-out-expo);
+}
+
+/* ───────── CSS-3D product models ───────── */
+.p3d {
+  transform-style: preserve-3d;
+}
+.model-shadow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.7), transparent);
+  filter: blur(10px);
+}
+.glow-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  --blur: 14px;
+  filter: blur(var(--blur));
+  background: conic-gradient(from 0deg, #38e1ff, #7c5cff, #ff4fd8, #38e1ff);
+  opacity: 0.85;
+  animation: hue-cycle 9s linear infinite;
+}
+
+/* Keyboard */
+.kb {
+  position: relative;
+  width: 400px;
+  height: 160px;
+  transform-style: preserve-3d;
+}
+.kb-slice {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+}
+.kb-keys {
+  position: absolute;
+  inset: 14px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transform-style: preserve-3d;
+}
+.kb-row {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+  transform-style: preserve-3d;
+}
+.kb-key {
+  position: relative;
+  transform-style: preserve-3d;
+  min-width: 0;
+}
+.kb-key::before,
+.kb-key::after,
+.kb-cap {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+}
+.kb-key::before {
+  background: #090c26;
+  transform: translateZ(0);
+}
+.kb-key::after {
+  background: #151a4a;
+  transform: translateZ(3.5px);
+}
+.kb-cap {
+  inset: 0 0 2px 0;
+  transform: translateZ(7px);
+  background: linear-gradient(160deg, #3a4090 0%, #1b2054 55%, #121641 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.45);
+}
+.kb-cap.accent-violet {
+  background: linear-gradient(160deg, #9c85ff 0%, #6a48f0 60%, #4a30c0 100%);
+}
+.kb-cap.accent-cyan {
+  background: linear-gradient(160deg, #7ceeff 0%, #2bbfe0 60%, #1b90b0 100%);
+}
+
+/* Mouse */
+.mouse {
+  position: relative;
+  width: 132px;
+  height: 208px;
+  transform-style: preserve-3d;
+}
+.mouse-slice {
+  position: absolute;
+  inset: 0;
+  border-radius: 62px 62px 74px 74px / 78px 78px 120px 120px;
+}
+
+/* ───────── Reduced motion / transparency / contrast (Apple accessibility rules) ───────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong,
+  .btn-glass {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: #0e1340;
+  }
+}
+@media (prefers-contrast: more) {
+  .glass,
+  .glass-strong,
+  .btn-glass,
+  .field {
+    background: #080b26;
+    border-color: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+/* Fine-pointer-only decoration is hidden on touch */
+@media (hover: none) {
+  .only-hover {
+    display: none !important;
+  }
+}

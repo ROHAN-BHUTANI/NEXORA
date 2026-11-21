@@ -1,0 +1,62 @@
+{
+  "ranAt": "2026-11-21T20:40:23.845Z",
+  "baseUrl": "http://127.0.0.1:5173",
+  "scenarios": {
+    "emptyCartCheckout": {
+      "cartErrorText": "Your cart is empty. Add at least one product before placing an order.",
+      "confirmationVisible": 0,
+      "ordersCreated": 0,
+      "nameFieldPreserved": "Rohan Test",
+      "cartCount": "0"
+    },
+    "rapidDoubleClick": {
+      "realDoubleClick": {
+        "ordersCreated": 1,
+        "confirmations": 1,
+        "buttonDisabledDuringProcessing": true,
+        "reference": "NXR-20261121-DVBWPXK5",
+        "total": "₹2,798"
+      },
+      "tenSynchronousClicksInOneTask": {
+        "ordersCreated": 1,
+        "confirmations": 1
+      }
+    },
+    "horizontalOverflow": {
+      "desktop": {
+        "scrollW": 1440,
+        "clientW": 1440,
+        "overflows": false
+      },
+      "tablet": {
+        "scrollW": 820,
+        "clientW": 820,
+        "overflows": false
+      },
+      "mobile": {
+        "scrollW": 390,
+        "clientW": 390,
+        "overflows": false
+      }
+    },
+    "keyboardOnlyCheckout": {
+      "confirmed": true,
+      "focusedElementAfterConfirm": "confirm-title",
+      "reference": "NXR-20261121-6QCLM6WS"
+    },
+    "twoProductMath": {
+      "mouseLine": "₹1,598",
+      "keyboardLine": "₹1,999",
+      "total": "₹3,597",
+      "expected": "₹1,598 + ₹1,999 = ₹3,597"
+    },
+    "reducedMotion": {
+      "checkoutWorks": true
+    },
+    "splineRuntime": {
+      "dataAttr": "off",
+      "note": "off = no VITE_SPLINE_SCENE_URL set; parallax scene rebuilt from the supplied .spline is shown"
+    }
+  },
+  "consoleErrors": []
+}
